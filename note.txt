@@ -1,0 +1,13 @@
+Input: chữ số viết tay. Output: số đó là số gì
+
+Giải bằng cách áp dụng các phương pháp supervised learning (học có giám sát) - là một cách học (bản thân đã được áp dụng). Ví dụ: đi trên đường thấy con chó chạy ngang thì biết đó là con chó (nhờ quá trình học bằng cách ngày xưa đi trên đường gặp đối tượng nào đó thì bố mẹ nói là con chó), vấn đề: tiếp nhập đầu tiên là "hình ảnh" con vật đó, định danh (con này là con chó) gọi là "nhãn" (cách học mà có hình và có nhãn của đối tượng là học có giám sát)
+
+Huấn luyện mô hình tượng tự như vậy
+B1: xây dựng tập dữ liệu (2 tập: tập huấn luyện (training) có nhiều hình, mỗi hình có nhãn đi kèm dùng để huấn luyện; tập kiểm thử (testing) có hình và nhãn, dùng hình và nhãn để kiểm tra mô hình -> Chuẩn bị dữ liệu: MNIST (60k training và 10k test, mỗi ảnh kích thước 28*28 pixel) -> 4 mảng kết quả (numpy array): train_imgs(60k,28,28), train_labels(60k), test_imgs(10k,28,28) và test_labels(10k). Rút đặc trưng: Img -> Rút đặc trưng -> vecto đặc trưng (giảm kích thước so với đầu vào, lấy đặc trưng, có tinh phân biệt cao) -> bộ phân lớp (0->9)
+
+Cài đặt ít nhất rút trích đặc trưng bằng vector hóa ảnh, downsampling, histogram
+
+1. duỗi 28*28 thành mảng 1 chiều
+2. pooling, chia thành các ô (ví dụ 4*4), mỗi ô tìm con số đại diện -> co lại 7*7, duỗi tiếp thành một vecto, chuẩn hóa thành 0,1 (mỗi pixel chia cho 255)
+3. histogram: 1 pixel 0->255, dựng mảng histogram có 256 phần tử (phần tử thứ 0 là đếm trong ảnh có bao nhiêu pixel có giá trị bằng 0, phần tử 1 cũng tương tự,.... đến phần tử 255) -> normalize, chuẩn hóa về 0,1 (chia cho tổng số pixel trong ảnh)
+4. tự đề xuất cách rút đặc trưng và cài đặt
