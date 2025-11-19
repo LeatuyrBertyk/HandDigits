@@ -1,2 +1,2 @@
-# NMCNTT_Project_HandDigits
+# Project Hand Digits recognition
 
