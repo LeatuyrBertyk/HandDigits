@@ -38,7 +38,6 @@ def loadMnist(path,kind='train'):
 # In ra kích thước các file để kiểm tra xem dữ liệu đã được chuẩn hóa chưa
 dataFolder = 'data' 
 
-print("Đang đọc dữ liệu...")
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
@@ -46,5 +45,3 @@ print(f"1. trainImgs shape:   {trainImgs.shape}")   # Mong đợi: (60000, 28, 2
 print(f"2. trainLabels shape: {trainLabels.shape}") # Mong đợi: (60000,)
 print(f"3. testImgs shape:    {testImgs.shape}")    # Mong đợi: (10000, 28, 28)
 print(f"4. testLabels shape:  {testLabels.shape}")  # Mong đợi: (10000,)
-
-print("Đã chuẩn bị xong 4 tập dữ liệu!")
