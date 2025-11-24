@@ -1,8 +1,7 @@
-# Khai báo thư viện
 import os
 import numpy as np
 
-
+# Hàm dọc dữ liệu Mnist từ dạng binary sang mảng numpy 
 def loadMnist(path,kind='train'):
 	labelsPath=os.path.join(path,'%s-labels.idx1-ubyte' % kind)
 	imagesPath=os.path.join(path,'%s-images.idx3-ubyte' % kind)
