@@ -33,5 +33,3 @@ hog_test = np.array(hog_test)
 clf = LinearSVC()
 clf.fit(hog_train, y_train)
 
-# 5. Accuracy
-print("Accuracy:", clf.score(hog_test, y_test))
