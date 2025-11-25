@@ -8,13 +8,11 @@ def RutDacTrung_HOG(FloatImgs):
     FeatureList = []
     for i in range(n):
         img = FloatImgs[i]
-
         # Tính HOG cho từng ảnh
         hogVector = hog(img,
                         pixels_per_cell=(8, 8),
                         cells_per_block=(2, 2),
                         orientations=9)
-
         FeatureList.append(hogVector)
     FeatureArray = np.array(FeatureList)  # (n, số_lượng_đặc_trưng)
     newLen = FeatureArray.shape[1] // 4
