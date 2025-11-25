@@ -26,6 +26,3 @@ TestImgs,  TestLabels  = loadMnist(datafolder, kind='t10k')
 
 ProcessedTrainImgs = RutDacTrung_HOG(TrainImgs)
 ProcessedTestImgs  = RutDacTrung_HOG(TestImgs)
-
-print("Kích thước đặc trưng Train:", ProcessedTrainImgs.shape)
-print("Kích thước đặc trưng Test :", ProcessedTestImgs.shape)
