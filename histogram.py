@@ -4,10 +4,8 @@ from skimage.feature import hog
 
 def RutDacTrung_HOG(FloatImgs):
     n, m, p = FloatImgs.shape        # n ảnh, mỗi ảnh 28×28
-
     # Chuẩn bị mảng đặc trưng cho tất cả ảnh
     FeatureList = []
-
     for i in range(n):
         img = FloatImgs[i]
 
