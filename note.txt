@@ -5,9 +5,32 @@ Giải bằng cách áp dụng các phương pháp supervised learning (học c�
 Huấn luyện mô hình tượng tự như vậy
 B1: xây dựng tập dữ liệu (2 tập: tập huấn luyện (training) có nhiều hình, mỗi hình có nhãn đi kèm dùng để huấn luyện; tập kiểm thử (testing) có hình và nhãn, dùng hình và nhãn để kiểm tra mô hình -> Chuẩn bị dữ liệu: MNIST (60k training và 10k test, mỗi ảnh kích thước 28*28 pixel) -> 4 mảng kết quả (numpy array): train_imgs(60k,28,28), train_labels(60k), test_imgs(10k,28,28) và test_labels(10k). Rút đặc trưng: Img -> Rút đặc trưng -> vecto đặc trưng (giảm kích thước so với đầu vào, lấy đặc trưng, có tinh phân biệt cao) -> bộ phân lớp (0->9)
 
+- Buổi 1
+
 Cài đặt ít nhất rút trích đặc trưng bằng vector hóa ảnh, downsampling, histogram
 
 1. duỗi 28*28 thành mảng 1 chiều
 2. pooling, chia thành các ô (ví dụ 4*4), mỗi ô tìm con số đại diện -> co lại 7*7, duỗi tiếp thành một vecto, chuẩn hóa thành 0,1 (mỗi pixel chia cho 255)
 3. histogram: 1 pixel 0->255, dựng mảng histogram có 256 phần tử (phần tử thứ 0 là đếm trong ảnh có bao nhiêu pixel có giá trị bằng 0, phần tử 1 cũng tương tự,.... đến phần tử 255) -> normalize, chuẩn hóa về 0,1 (chia cho tổng số pixel trong ảnh)
 4. tự đề xuất cách rút đặc trưng và cài đặt
+
+- Buổi 2
+
+Đã có trainImgs (60k,28,28), trainLabels(60k), testImgs(10k,28,28), testLabels(10k) -> các vecto đặc trưng
+
+Nhiệm vụ: phân lớp, sử dụng bộ phân lớp: gán 1 lớp cho từng mẫu (0->9: 10 lớp), mỗi ảnh đại diển bởi mỗi vecto đặc trưng, với mỗi vecto đạc trưng sẽ gán 1 bộ phân lớp: phương pháp kNN (k láng giềng gần nhất).
+kNN: train (vecto đặc trưng + nhãn): tìm nhãn trong tập test
+
+kNN:
+B1: tính khoảng cách từ giữa hai vecto (tính vecto của mỗi trong tập test đến mọi vecto trong tập train)
+B2: chọn k mẫu trong tập train mà có khoảng cách ngắn nhất. 
+B3: với k mẫu đó, xem coi số lượng nhãn nào là chiếm đa số -> gán lại cho mẫu trong tập test
+
+train rút bằng kiểu gì thì train rút bằng kiểu đó
+
+k là con số trong thực nghiệm, phải chạy nhiều lần để tìm con k tốt nhất (60k -> k khoảng vài trăm)
+
+Kết quả sẽ là tất cả nhãn trong tập test -> xuất ra mảng 10k testResult
+
+Code 1 hàm
+

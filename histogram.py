@@ -2,7 +2,7 @@ from loadMnist import loadMnist
 import numpy as np
 from skimage.feature import hog
 def RutDacTrung_HOG(FloatImgs):
-    n, m, p = FloatImgs.shape
+    n= FloatImgs.shape
     FeatureList = []
     for i in range(n):
         img = FloatImgs[i]

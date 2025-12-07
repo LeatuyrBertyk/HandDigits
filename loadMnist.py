@@ -2,7 +2,6 @@
 import os
 import numpy as np
 
-
 def loadMnist(path,kind='train'):
 	labelsPath=os.path.join(path,'%s-labels.idx1-ubyte' % kind)
 	imagesPath=os.path.join(path,'%s-images.idx3-ubyte' % kind)

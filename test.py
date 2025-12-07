@@ -1,5 +1,5 @@
 from loadMnist import loadMnist 
-import numpy as np
+import numpy as np 
 
 # Load 4 mảng numpy (bắt buộc)
 dataFolder = 'data' 

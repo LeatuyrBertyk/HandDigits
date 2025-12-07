@@ -38,7 +38,3 @@ print("Test feature shape:", testFeatures.shape)
 #Lưu kết quả để dùng cho các bước tiếp theo
 np.save("train_downsampling.npy", trainFeatures)
 np.save("test_downsampling.npy", testFeatures)
-
-
-
-
