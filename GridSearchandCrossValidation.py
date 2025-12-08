@@ -37,7 +37,7 @@ def KNNPredict(Vectors, TestVectors, LabelVectors, Kval) :
 def CalculateAccuraryScore(PredictionLabels, TrueLabels) : 
     return np.mean(PredictionLabels == TrueLabels) 
 
-def CrossValidation(TrainningVectors, LabelVectors, Kval, cv = 5, rdstate = 42) -> float: 
+def CrossValidation(TrainningVectors, LabelVectors, Kval, cv = 5, rdstate = 42): 
     kf = KFold(n_splits = cv, shuffle = True, random_state = rdstate) 
     scores = [] 
     for TrainID, ValID in kf.split(TrainningVectors) : 
