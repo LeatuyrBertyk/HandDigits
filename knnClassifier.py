@@ -2,15 +2,22 @@ import numpy as np
 from scipy.spatial.distance import cdist  # Hỗ trợ hàm tính khoảng cách
 
 from featureExtract.loadMnist import loadMnist 
+# from featureExtract.vectorize import vectorizeExtract
 from featureExtract.histogram import histogramExtract 
-from featureExtract.another import anotherExtract 
 from featureExtract.downsampling import downsamplingExtract 
+from featureExtract.another import anotherExtract 
 
 dataFolder = 'data'
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
 # Load các mảng train và test của từng phép rút đặc trưng
+
+# trainVectorize = vectorizeExtract(trainImgs)
+# testVectorize = vectorizeExtract(testImgs)
+# print(f"Kích thước đặc trưng Vectorize (Train): {trainVectorize.shape}")
+# print(f"Kích thước đặc trưng Vectorize (Test): {testVectorize.shape}")
+
 trainHistogram = histogramExtract(trainImgs)
 testHistogram = histogramExtract(testImgs)
 # print(f"Kích thước đặc trưng Histogram (Train): {trainHistogram.shape}")
@@ -25,13 +32,15 @@ trainAnother = anotherExtract(trainImgs)
 testAnother = anotherExtract(testImgs)
 # print(f"Kích thước đặc trưng Hist. Intensity (Train): {trainAnother.shape}")
 # print(f"Kích thước đặc trưng Hist. Intensity (Test ): {testAnother.shape}\n")
-
+ 
 
 
 featureData = {
+    # 'vectorize': {'train': trainVectorize, 'test': testVectorize},
     'histogram': {'train': trainHistogram, 'test': testHistogram},
-    'another': {'train': trainAnother, 'test': testAnother},
-    'downsampling': {'train': trainDownsampling, 'test': testDownsampling}
+    'downsampling': {'train': trainDownsampling, 'test': testDownsampling,
+    'another': {'train': trainAnother, 'test': testAnother}
+}
 }
 
 
