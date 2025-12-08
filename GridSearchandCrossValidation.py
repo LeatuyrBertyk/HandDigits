@@ -74,8 +74,8 @@ trainAnother = np.array(anotherExtract(trainImgs))
 
 Kvalues = [1,3,5] 
 HistogramBestScore, HistogramBestIndex = GridSearch(trainHistogram,trainLabels,Kvalues)
-DownsamplingBestScore, DownsamplingBestIndex = GridSearch(trainDownsampling,trainLabels, Kvalues)
-AnotherBestScore, AnotherBestIndex = GridSearch(trainAnother,trainLabels,Kvalues)
 print(HistogramBestScore, HistogramBestIndex) 
+DownsamplingBestScore, DownsamplingBestIndex = GridSearch(trainDownsampling,trainLabels, Kvalues)
 print(DownsamplingBestScore,DownsamplingBestIndex) 
+AnotherBestScore, AnotherBestIndex = GridSearch(trainAnother,trainLabels,Kvalues)
 print(AnotherBestScore,AnotherBestIndex) 

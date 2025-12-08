@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.spatial.distance import cdist  # Hỗ trợ hàm tính khoảng cách
-
+import os
 from featureExtract.loadMnist import loadMnist 
 from featureExtract.vectorize import vectorizeExtract
 from featureExtract.histogram import histogramExtract 
@@ -90,23 +90,31 @@ def predictLabel(featureMethod, testIndex, k):
 
 kValue = 5 
 results = {}
+output_dir = 'result' 
 
-print(f"--- Bắt đầu dự đoán nhãn với k={kValue} ---")
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+    print(f"Đã tạo thư mục: {output_dir}/")
 
+print(f"--- Bắt đầu dự đoán nhãn với k={kValue} và lưu vào thư mục '{output_dir}/' ---")
 
 for featureMethod, data in featureData.items():
     N_test = data['test'].shape[0]
     assignedLabels = np.zeros(N_test, dtype=int)
     
-    print(f"\nĐang xử lý phương pháp: **{featureMethod}** (Số lượng mẫu: {N_test})")
+    print(f"\n⚡️ Đang xử lý phương pháp: **{featureMethod}** (Số lượng mẫu: {N_test})")
     
+    # Gán nhãn
     for i in range(N_test):
         assignedLabels[i] = predictLabel(featureMethod, i, k=kValue)
         
-    # Lưu kết quả
+    output_filename = f"{featureMethod}_k{kValue}_labels.npy"
+    output_filepath = os.path.join(output_dir, output_filename)
+    
+    np.save(output_filepath, assignedLabels)
+    
     results[featureMethod] = {
         'assignedLabels': assignedLabels,
     }
-    
-    print(f"-> Đã gán nhãn xong.\n")
+    print(f"   -> Đã lưu kết quả vào file: **{output_filepath}**")
 
