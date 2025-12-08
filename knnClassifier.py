@@ -36,11 +36,10 @@ testAnother = anotherExtract(testImgs)
 
 
 featureData = {
-    'vectorize': {'train': trainVectorize, 'test': testVectorize},
-    'histogram': {'train': trainHistogram, 'test': testHistogram},
-    'downsampling': {'train': trainDownsampling, 'test': testDownsampling,
-    'another': {'train': trainAnother, 'test': testAnother}
-}
+    'vectorize':    {'train': trainVectorize,    'test': testVectorize,    'y_train': trainLabels},
+    'histogram':    {'train': trainHistogram,    'test': testHistogram,    'y_train': trainLabels},
+    'downsampling': {'train': trainDownsampling, 'test': testDownsampling, 'y_train': trainLabels},
+    'another':      {'train': trainAnother,      'test': testAnother,      'y_train': trainLabels}
 }
 
 
@@ -70,3 +69,44 @@ def calculateDistances(featureMethod: str, testVectorIndex: int) -> np.ndarray:
 
 # Cách sử dụng:
 # Downsampling: calculateDistances('downsampling',index) 
+
+
+def predictLabel(featureMethod, testIndex, k):
+    # Lấy khoảng cách
+    distances = calculateDistances(featureMethod, testIndex)
+
+    # Lấy k chỉ số nhỏ nhất
+    k_idx = np.argsort(distances)[:k]
+
+    # Lấy nhãn tương ứng
+    y_train = featureData[featureMethod]['y_train']
+    k_labels = y_train[k_idx]
+
+    # Majority vote
+    labels, counts = np.unique(k_labels, return_counts=True)
+    majority_label = labels[np.argmax(counts)]
+
+    return majority_label
+
+kValue = 5 
+results = {}
+
+print(f"--- Bắt đầu dự đoán nhãn với k={kValue} ---")
+
+
+for featureMethod, data in featureData.items():
+    N_test = data['test'].shape[0]
+    assignedLabels = np.zeros(N_test, dtype=int)
+    
+    print(f"\nĐang xử lý phương pháp: **{featureMethod}** (Số lượng mẫu: {N_test})")
+    
+    for i in range(N_test):
+        assignedLabels[i] = predictLabel(featureMethod, i, k=kValue)
+        
+    # Lưu kết quả
+    results[featureMethod] = {
+        'assignedLabels': assignedLabels,
+    }
+    
+    print(f"-> Đã gán nhãn xong.\n")
+

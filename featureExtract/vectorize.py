@@ -24,8 +24,8 @@ def vectorizeExtract(images):
     return binaryVectors
 
 
-trainFeatures = vectorizeExtract(trainImgs)
-testFeatures = vectorizeExtract(testImgs)
+# trainFeatures = vectorizeExtract(trainImgs)
+# testFeatures = vectorizeExtract(testImgs)
 
 # # In kết quả
 # print("Train features shape:", trainFeatures.shape)
