@@ -21,7 +21,9 @@ from featureExtract.downsampling import downsamplingExtract
 
 def EuclideanDistance(x1,x2) : 
     return np.sqrt(np.sum((x1-x2) ** 2))
-
+# Dự đoán nhãn cho một vector đặc trưng
+#______________________________________
+# Mô hình KNN
 def KNNPredictSingle(Vectors,TestVector, LabelVectors, Kval) : 
     distances = [EuclideanDistance(TestVector,Vector) for Vector in Vectors]
     Kindex = np.argsort(distances)[:Kval] 
@@ -33,8 +35,9 @@ def KNNPredictSingle(Vectors,TestVector, LabelVectors, Kval) :
 def KNNPredict(Vectors, TestVectors, LabelVectors, Kval) : 
     Predictions = [KNNPredictSingle(Vectors,TestVector, LabelVectors, Kval) for TestVector in TestVectors] 
     return np.array(Predictions) 
-
-def CalculateAccuraryScore(PredictionLabels, TrueLabels) :  # 
+#_____________________________________
+#Cross Validation
+def CalculateAccuraryScore(PredictionLabels, TrueLabels) :  # Đánh giá độ chính xác của mô hình KNN 
     return np.mean(PredictionLabels == TrueLabels) 
 
 def CrossValidation(TrainningVectors, LabelVectors, Kval, cv = 5, rdstate = 42) :
@@ -47,8 +50,8 @@ def CrossValidation(TrainningVectors, LabelVectors, Kval, cv = 5, rdstate = 42) 
         score = CalculateAccuraryScore(PredictionLabels, LabelValFold) 
         scores.append(score) 
     return np.mean(scores) 
-
-
+#_______________________________________________
+# Grid Search
 def GridSearch(FeatureVectors, LabelVectors, Kvalues) : 
     BestScore = -np.inf 
     BestIndex = [] 
@@ -69,7 +72,7 @@ trainHistogram = np.array(histogramExtract(trainImgs))
 trainDownsampling = np.array([downsamplingExtract(img) for img in trainImgs])
 trainAnother = np.array(anotherExtract(trainImgs)) 
 
-Kvalues = [1,3,5,7,11,13,17,19,23,29,31,37] 
+Kvalues = [1,3,5] 
 HistogramBestScore, HistogramBestIndex = GridSearch(trainHistogram,trainLabels,Kvalues)
 DownsamplingBestScore, DownsamplingBestIndex = GridSearch(trainDownsampling,trainLabels, Kvalues)
 AnotherBestScore, AnotherBestIndex = GridSearch(trainAnother,trainLabels,Kvalues)
