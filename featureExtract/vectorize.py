@@ -1,96 +1,37 @@
-# from featureExtract.loadMnist import loadMnist 
-# import numpy as np
-# 
-# # Load 4 mảng numpy 
-# dataFolder = 'data' 
-# trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
-# testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
+from featureExtract.loadMnist import loadMnist 
+import numpy as np
+
+# Load 4 mảng numpy 
+dataFolder = 'data' 
+trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
+testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
 import numpy as np
 import os
 
-# ============================================================
-# ============================================================
+def vectorizeExtract(images):
+    if images.ndim != 3:
+        raise ValueError("Input phải có dạng (N, 28, 28)")
 
-# Kiểm tra file MNIST
-required_files = [
-    'vectorhoaanh/data/train-images.idx3-ubyte',
-    'vectorhoaanh/data/train-labels.idx1-ubyte',
-    'vectorhoaanh/data/t10k-images.idx3-ubyte',
-    'vectorhoaanh/data/t10k-labels.idx1-ubyte'
-]
+    numSamples = images.shape[0]
 
-for f in required_files:
-    if not os.path.exists(f):
-        raise FileNotFoundError(f"Không tìm thấy file: {f}")
-print("✓ Đã tìm thấy đầy đủ 4 file MNIST!\n")
+    # Flatten
+    vectors = images.reshape(numSamples, 784).astype(np.float32) / 255.0
 
-# Hàm load dữ liệu
-def load_img(f):
-    data = open(f, 'rb').read()
-    _, n, h, w = np.frombuffer(data[:16], '>i4')
-    return np.frombuffer(data[16:], 'u1').reshape(n, h, w).astype('f4') / 255
+    # Binarize
+    binaryVectors = (vectors >= 0.5).astype(np.uint8)
+    
+    return binaryVectors
 
-def load_lbl(f):
-    data = open(f, 'rb').read()
-    _, n = np.frombuffer(data[:8], '>i4')
-    return np.frombuffer(data[8:], 'u1')
 
-# Load dữ liệu
-X_train = load_img('vectorhoaanh/data/train-images.idx3-ubyte')
-y_train = load_lbl('vectorhoaanh/data/train-labels.idx1-ubyte')
-X_test  = load_img('vectorhoaanh/data/t10k-images.idx3-ubyte')
-y_test  = load_lbl('vectorhoaanh/data/t10k-labels.idx1-ubyte')
+trainFeatures = vectorizeExtract(trainImgs)
+testFeatures = vectorizeExtract(testImgs)
 
-print(f"Dữ liệu gốc: Train {X_train.shape}, Test {X_test.shape}")
-
-# ============================================================
-# VECTOR HÓA ẢNH (Flatten 28x28 → 784 chiều)
-# ============================================================
-X_train_vec = X_train.reshape(-1, 784)
-X_test_vec = X_test.reshape(-1, 784)
-
-print(f"\nSau vector hóa: Train {X_train_vec.shape}, Test {X_test_vec.shape}")
-print(f"→ Mỗi ảnh 28x28 được chuyển thành vector 784 chiều\n")
-
-# ============================================================
-# NHỊ PHÂN HÓA (0 và 1)
-# ============================================================
-X_train_bin = (X_train_vec >= 0.5).astype('int')
-X_test_bin = (X_test_vec >= 0.5).astype('int')
-
-print(f"Sau nhị phân hóa: Train {X_train_bin.shape}, Test {X_test_bin.shape}")
-print(f"→ Giá trị >= 0.5 → 1, giá trị < 0.5 → 0\n")
-
-# ============================================================
-# IN VÍ DỤ VECTOR ĐẶC TRƯNG
-# ============================================================
-print("="*60)
-print("VÍ DỤ VECTOR ĐẶC TRƯNG (NHỊ PHÂN)")
-print("="*60)
-
-# Ví dụ 1
-print(f"\n[Ví dụ 1] Ảnh đầu tiên - Label: {y_train[0]}")
-print(f"Vector 784 chiều đầy đủ (nhị phân 0/1):")
-print(X_train_bin[0])
-
-# Ví dụ 2
-print(f"\n[Ví dụ 2] Ảnh thứ hai - Label: {y_train[1]}")
-print(f"Vector 784 chiều đầy đủ (nhị phân 0/1):")
-print(X_train_bin[1])
-
-print("\n(Mỗi vector có 784 giá trị: 0 hoặc 1)")
-print()
-
-# ============================================================
-# KẾT QUẢ
-# ============================================================
-print("="*60)
-print("="*60)
-print("Phương pháp        : Vector hóa ảnh")
-print("Số chiều đặc trưng : 784 (từ ảnh 28x28)")
-print("Dữ liệu train      : 60,000 mẫu")
-print("Dữ liệu test       : 10,000 mẫu")
-print("="*60)
-print("\nĐã hoàn thành rút trích đặc trưng bằng vector hóa ảnh")
+# # In kết quả
+# print("Train features shape:", trainFeatures.shape)
+# print("Test features shape:", testFeatures.shape)
+# 
+# # Lưu để dùng cho KNN
+# np.save("train_vector.npy", trainFeatures)
+# np.save("test_vector.npy", testFeatures)
 
