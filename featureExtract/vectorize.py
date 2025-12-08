@@ -10,11 +10,6 @@ import numpy as np
 import os
 
 def vectorizeExtract(images):
-    """
-    images: numpy array (N, 28, 28)
-    return: numpy array (N, 784) binary 0/1
-    """
-
     if images.ndim != 3:
         raise ValueError("Input phải có dạng (N, 28, 28)")
 
