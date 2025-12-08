@@ -21,9 +21,18 @@ def predictLabel(featureMethod, testIndex, k):
     majority_label = labels[np.argmax(counts)]
 
     return majority_label
+# GÁN NHÃN CHO TOÀN BỘ TẬP TEST
+# Số lượng mẫu test
 N = testFeatures.shape[0]
+# Tạo mảng rỗng để chứa nhãn dự đoán của từng ảnh test
+# Gọi hàm predictLabel để dự đoán nhãn cho mẫu test thứ i
+    # "vector" là tên phương pháp rút đặc trưng bạn dùng
+    # k=5 nghĩa là dùng 5 hàng xóm gần nhất
 assignedLabels = np.zeros(N, dtype=int)
 
 for i in range(N):
     assignedLabels[i] = predictLabel("vector", i, k=5)
 
+# assignedLabels lúc này chứa nhãn dự đoán của toàn bộ tập test
+print("Đã gán nhãn cho toàn bộ tập test.")
+print("assignedLabels shape =", assignedLabels.shape)
