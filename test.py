@@ -1,7 +1,6 @@
-from loadMnist import loadMnist 
-import numpy as np 
+from featureExtract.loadMnist import loadMnist 
 
-# Load 4 mảng numpy (bắt buộc)
+# Load 4 mảng numpy 
 dataFolder = 'data' 
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')

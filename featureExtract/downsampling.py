@@ -1,13 +1,13 @@
-from loadMnist import loadMnist 
+from featureExtract.loadMnist import loadMnist 
 import numpy as np
 
-# Load 4 mảng numpy (bắt buộc)
+# Load 4 mảng numpy 
 dataFolder = 'data' 
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
-# Hàm downsampe_image
-def  downsample_image(img, block_size = 4):
+# Hàm downsampeImage
+def  downsamplingExtract(img, block_size = 4):
     h, w = img.shape # Lấy height(h) và width(w) của img, h = 28, w = 28
     new_h = h // block_size # heigh mới = 4
     new_w = w // block_size # width mới = 4
@@ -27,14 +27,13 @@ def  downsample_image(img, block_size = 4):
     return binary_img.flatten()
 
 # Áp dụng downsampling cho toàn bộ dataset
-trainFeatures = np.array([downsample_image(img) for img in trainImgs])
-testFeatures = np.array([downsample_image(img) for img in testImgs])
+processedTrainFeatures = np.array([downsamplingExtract(img) for img in trainImgs])
+processedTestFeatures = np.array([downsamplingExtract(img) for img in testImgs])
 
 # In kết quả
+print("Train features shape:", processedTrainFeatures.shape)
+print("Test feature shape:", processedTestFeatures.shape)
 
-print("Train features shape:", trainFeatures.shape)
-print("Test feature shape:", testFeatures.shape)
-
-#Lưu kết quả để dùng cho các bước tiếp theo
-np.save("train_downsampling.npy", trainFeatures)
-np.save("test_downsampling.npy", testFeatures)
+# Lưu kết quả để dùng cho các bước tiếp theo
+# np.save("train_downsampling.npy", processedTrainFeatures)
+# np.save("test_downsampling.npy", processedTrainFeatures)
