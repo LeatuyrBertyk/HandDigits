@@ -28,16 +28,16 @@ def KNNPredictSingle(Vectors,TestVector, LabelVectors, Kval) :
     Knearestlabels = LabelVectors[Kindex]
 
     most_common = stats.mode(Knearestlabels)
-    return most_common.mode[0]
+    return np.squeeze(most_common.mode)
 
 def KNNPredict(Vectors, TestVectors, LabelVectors, Kval) : 
     Predictions = [KNNPredictSingle(Vectors,TestVector, LabelVectors, Kval) for TestVector in TestVectors] 
     return np.array(Predictions) 
 
-def CalculateAccuraryScore(PredictionLabels, TrueLabels) : 
+def CalculateAccuraryScore(PredictionLabels, TrueLabels) :  # 
     return np.mean(PredictionLabels == TrueLabels) 
 
-def CrossValidation(TrainningVectors, LabelVectors, Kval, cv = 5, rdstate = 42) -> float: 
+def CrossValidation(TrainningVectors, LabelVectors, Kval, cv = 5, rdstate = 42) :
     kf = KFold(n_splits = cv, shuffle = True, random_state = rdstate) 
     scores = [] 
     for TrainID, ValID in kf.split(TrainningVectors) : 
