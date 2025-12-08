@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.spatial.distance import cdist  # Hỗ trợ hàm tính khoảng cách
 import os
+
 from featureExtract.loadMnist import loadMnist 
 from featureExtract.vectorize import vectorizeExtract
 from featureExtract.histogram import histogramExtract 
@@ -94,9 +95,8 @@ output_dir = 'result'
 
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
-    print(f"Đã tạo thư mục: {output_dir}/")
 
-print(f"--- Bắt đầu dự đoán nhãn với k={kValue} và lưu vào thư mục '{output_dir}/' ---")
+print(f"Bắt đầu dự đoán nhãn với k={kValue} và lưu vào thư mục '{output_dir}/' \n")
 
 for featureMethod, data in featureData.items():
     N_test = data['test'].shape[0]
@@ -116,5 +116,5 @@ for featureMethod, data in featureData.items():
     results[featureMethod] = {
         'assignedLabels': assignedLabels,
     }
-    print(f"   -> Đã lưu kết quả vào file: **{output_filepath}**")
+    print(f"-> Đã lưu kết quả vào file: **{output_filepath}**")
 
