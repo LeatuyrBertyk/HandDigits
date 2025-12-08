@@ -15,6 +15,7 @@ from scipy import stats
 from featureExtract.loadMnist import loadMnist 
 from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score
+from featureExtract.vectorize import vectorizeExtract
 from featureExtract.histogram import histogramExtract 
 from featureExtract.another import anotherExtract 
 from featureExtract.downsampling import downsamplingExtract 
@@ -68,11 +69,14 @@ testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
 
 # Load các mảng bằng 4 phương pháp rút đặc trưng
+trainVectorize = vectorizeExtract(trainImgs)
 trainHistogram = np.array(histogramExtract(trainImgs)) 
 trainDownsampling = np.array([downsamplingExtract(img) for img in trainImgs])
 trainAnother = np.array(anotherExtract(trainImgs)) 
 
 Kvalues = [1,3,5] 
+VectorizeBestScore, VectorizeBestIndex = GridSearch(trainVectorize,trainLabels,Kvalues) 
+print(VectorizeBestScore, VectorizeBestIndex) 
 HistogramBestScore, HistogramBestIndex = GridSearch(trainHistogram,trainLabels,Kvalues)
 print(HistogramBestScore, HistogramBestIndex) 
 DownsamplingBestScore, DownsamplingBestIndex = GridSearch(trainDownsampling,trainLabels, Kvalues)
