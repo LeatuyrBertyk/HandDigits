@@ -30,10 +30,10 @@ def  downsamplingExtract(img, block_size = 4):
 processedTrainFeatures = np.array([downsamplingExtract(img) for img in trainImgs])
 processedTestFeatures = np.array([downsamplingExtract(img) for img in testImgs])
 
-# In kết quả
-print("Train features shape:", processedTrainFeatures.shape)
-print("Test feature shape:", processedTestFeatures.shape)
-
-# Lưu kết quả để dùng cho các bước tiếp theo
+# # In kết quả
+# print("Train features shape:", processedTrainFeatures.shape)
+# print("Test feature shape:", processedTestFeatures.shape)
+# 
+# # Lưu kết quả để dùng cho các bước tiếp theo
 # np.save("train_downsampling.npy", processedTrainFeatures)
 # np.save("test_downsampling.npy", processedTrainFeatures)
