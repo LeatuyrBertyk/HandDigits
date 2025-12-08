@@ -22,7 +22,7 @@ from featureExtract.downsampling import downsamplingExtract
 def EuclideanDistance(x1,x2) : 
     return np.sqrt(np.sum((x1-x2) ** 2))
 # Dự đoán nhãn cho một vector đặc trưng
-#______________________________________
+
 # Mô hình KNN
 def KNNPredictSingle(Vectors,TestVector, LabelVectors, Kval) : 
     distances = [EuclideanDistance(TestVector,Vector) for Vector in Vectors]
@@ -35,7 +35,7 @@ def KNNPredictSingle(Vectors,TestVector, LabelVectors, Kval) :
 def KNNPredict(Vectors, TestVectors, LabelVectors, Kval) : 
     Predictions = [KNNPredictSingle(Vectors,TestVector, LabelVectors, Kval) for TestVector in TestVectors] 
     return np.array(Predictions) 
-#_____________________________________
+
 #Cross Validation
 def CalculateAccuraryScore(PredictionLabels, TrueLabels) :  # Đánh giá độ chính xác của mô hình KNN 
     return np.mean(PredictionLabels == TrueLabels) 
@@ -50,7 +50,7 @@ def CrossValidation(TrainningVectors, LabelVectors, Kval, cv = 5, rdstate = 42) 
         score = CalculateAccuraryScore(PredictionLabels, LabelValFold) 
         scores.append(score) 
     return np.mean(scores) 
-#_______________________________________________
+
 # Grid Search
 def GridSearch(FeatureVectors, LabelVectors, Kvalues) : 
     BestScore = -np.inf 
