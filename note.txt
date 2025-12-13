@@ -32,4 +32,9 @@ k là con số trong thực nghiệm, phải chạy nhiều lần để tìm con
 
 Kết quả sẽ là tất cả nhãn trong tập test -> xuất ra mảng 10k testResult
 
-Code 1 hàMNIST
+Code 1 hàm
+
+- Buổi 3
+
+Đánh giá hiệu quả. Có tập train (60k mẫu, mỗi mẫu có hình và nhãn đi kèm), và tập test (10k mẫu, mỗi mẫu có hình và nhãn đi kèm). lấy hình trong tập test, xuất ra nhãn dự đoán và so với nhãn đúng của nó. Đi tính độ đo accuracy = (tổng mẫu đoán đúng)/(tổng số mẫu).
+Confusion maxtrix (ma trận nhầm lẫn): là 1 ma trận có kích thước nxn (n là số lớp mà mình muốn phân loại)
