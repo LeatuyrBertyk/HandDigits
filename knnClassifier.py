@@ -21,7 +21,7 @@ testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 trainVectorize = vectorizeExtract(trainImgs)
 testVectorize = vectorizeExtract(testImgs)
 print(f"Kích thước đặc trưng Vectorize (Train): {trainVectorize.shape}")
-print(f"Kích thước đặc trưng Vectorize (Test): {testVectorize.shape}")
+print(f"Kích thước đặc trưng Vectorize (Test ): {testVectorize.shape}")
 
 trainHistogram = histogramExtract(trainImgs)
 testHistogram = histogramExtract(testImgs)
@@ -36,20 +36,20 @@ print(f"Kích thước đặc trưng Downsampling (Test ): {testDownsampling.sha
 trainAnother = anotherExtract(trainImgs)
 testAnother = anotherExtract(testImgs)
 print(f"Kích thước đặc trưng Hist. Intensity (Train): {trainAnother.shape}")
-print(f"Kích thước đặc trưng Hist. Intensity (Test ): {testAnother.shape}\n")
- 
+print(f"Kích thước đặc trưng Hist. Intensity (Test ): {testAnother.shape}\n") 
 
 
 featureData = {
-    'vectorize':    {'train': trainVectorize,    'test': testVectorize,    'y_train': trainLabels},
+    # 'vectorize':    {'train': trainVectorize,    'test': testVectorize,    'y_train': trainLabels},
     'histogram':    {'train': trainHistogram,    'test': testHistogram,    'y_train': trainLabels},
     'downsampling': {'train': trainDownsampling, 'test': testDownsampling, 'y_train': trainLabels},
-    'another':      {'train': trainAnother,      'test': testAnother,      'y_train': trainLabels}
+    'another':      {'train': trainAnother,      'test': testAnother,      'y_train': trainLabels},
+    'vectorize':    {'train': trainVectorize,    'test': testVectorize,    'y_train': trainLabels}
 }
 
 
 # Hàm tính khoảng cách
-def calculateDistances(featureMethod: str, testVectorIndex: int) -> np.ndarray:
+def kNNPredictLabel(featureMethod: str, testVectorIndex: int, k) -> np.ndarray:
     if featureMethod not in featureData:
         raise ValueError(f"'{featureMethod}' không hợp lệ.")
 
@@ -68,14 +68,6 @@ def calculateDistances(featureMethod: str, testVectorIndex: int) -> np.ndarray:
     for i in range(N_train):
         distances[i] = euclideanDistance(queryVector, train[i].flatten())
 
-    return distances
-
-# Cách sử dụng:
-# Downsampling: calculateDistances('downsampling',index) 
-
-
-def predictLabel(featureMethod, testIndex, k):
-    distances = calculateDistances(featureMethod, testIndex)
     k_idx = np.argsort(distances)[:k]
     y_train = featureData[featureMethod]['y_train']
     k_labels = y_train[k_idx]
@@ -83,6 +75,7 @@ def predictLabel(featureMethod, testIndex, k):
     majority_label = labels[np.argmax(counts)]
 
     return majority_label
+
 
 kValue = 5 
 results = {}
@@ -102,7 +95,7 @@ for featureMethod, data in featureData.items():
     startTime = time.time()
     # Gán nhãn
     for i in range(N_test):
-        assignedLabels[i] = predictLabel(featureMethod, i, k=kValue)
+        assignedLabels[i] = kNNPredictLabel(featureMethod, i, k=kValue)
     
     endTime = time.time()
     elapsedTime = endTime-startTime
