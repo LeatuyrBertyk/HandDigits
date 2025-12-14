@@ -1,6 +1,10 @@
 import numpy as np
 import os
 import time
+from featureExtract.loadMnist import loadMnist 
+from sklearn.metrics import accuracy_score, confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
 from knnClassifier import kNNPredictLabel
 from knnClassifier import loadFeature
 
@@ -11,34 +15,97 @@ trainDownsampling = loadFeature('downsampling', 'train')
 testDownsampling = loadFeature('downsampling', 'test')
 
 
-# Giá trị k hiện tại
-kValue = [13,15,17,19,21]
-
-
-# Cài đặt cấu hình cho việc trả kết quả
+kValue = [5,7,9,11,13,15,17,19,21,23]
 featureMethod = 'downsampling'
-outputDir = os.path.join('resultkNN', f'result{featureMethod}') 
 
-print(f"Kích thước đặc trưng Train: {trainDownsampling.shape}")
-print(f"Kích thước đặc trưng Test : {testDownsampling.shape}")
 
-N_test = testDownsampling.shape[0]
+# Note vì đã cho ra kết quả ở resultkNN/resultDownsampling
 
-assignedLabels = np.zeros(N_test, dtype=int)
+# # Cài đặt cấu hình cho việc trả kết quả
+# outputDir = os.path.join('resultkNN', f'result{featureMethod}') 
+# 
+# print(f"Kích thước đặc trưng Train: {trainDownsampling.shape}")
+# print(f"Kích thước đặc trưng Test : {testDownsampling.shape}")
+# 
+# N_test = testDownsampling.shape[0]
+# assignedLabels = np.zeros(N_test, dtype=int)
+# 
+# for index in kValue:
+#     startTime = time.time()
+#         
+#     for i in range(N_test):
+#         assignedLabels[i] = kNNPredictLabel(featureMethod, i, k=index)
+#         
+#     endTime = time.time()
+#     elapsedTime = endTime - startTime
+#         
+#     print(f"Thời gian chạy: {elapsedTime:.2f} giây")
+#         
+#     output_filename = f"{featureMethod}_k{index}_labels.npy"
+#     output_filepath = os.path.join(outputDir, output_filename)
+#             
+#     np.save(output_filepath, assignedLabels)
+#     print(f"\n-> Đã lưu mảng nhãn kết quả vào file: {output_filepath}")
 
-for index in kValue:
-    startTime = time.time()
+
+
+
+dataFolder = 'data'
+baseOutputDir = 'resultkNN' 
+subDir = f'result{featureMethod.capitalize()}'
+
+_, y_true = loadMnist(dataFolder, kind='t10k')
+totalSample = len(y_true)
+
+
+def evaluateDownsampling(y_true: np.ndarray, k_val: int):
+    print(f"Đánh giá Downsampling với k = {k_val}")
     
-    for i in range(N_test):
-        assignedLabels[i] = kNNPredictLabel(featureMethod, i, k=index)
+    predicted_filename = f"{featureMethod}_k{k_val}_labels.npy"
+    predicted_labels_path = os.path.join(baseOutputDir, subDir, predicted_filename)
     
-    endTime = time.time()
-    elapsedTime = endTime - startTime
+    y_pred = np.load(predicted_labels_path)
+    accuracy = accuracy_score(y_true, y_pred)
+    correctPredictions = np.sum(y_pred == y_true)
     
-    print(f"Thời gian chạy: {elapsedTime:.2f} giây")
+    print(f"   * Số mẫu đoán đúng: {correctPredictions}/{totalSample}")
+    print(f"   * Độ chính xác (Accuracy): {accuracy*100:.2f}%\n")
     
-    output_filename = f"{featureMethod}_k{index}_labels.npy"
-    output_filepath = os.path.join(outputDir, output_filename)
+
+    # Đánh giá hiệu quả bằng Confuse matrix 
+    conf_matrix = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(8, 7)) 
+    sns.heatmap(conf_matrix, 
+                annot=True, 
+                fmt='d', 
+                cmap='Blues',
+                xticklabels=range(10), yticklabels=range(10),
+                linewidths=.5, linecolor='black',
+                cbar=False)
+    
+    plt.xlabel('Nhãn Dự đoán (Predicted)')
+    plt.ylabel('Nhãn Thực tế (True)')
+    plt.title(f'Confusion Matrix - Downsampling (K={k_val}) - Acc: {accuracy*100:.2f}%')
+    
+    save_dir = os.path.join(baseOutputDir, subDir)
+    save_path = os.path.join(save_dir, f'confusion_matrix_{featureMethod}_k{k_val}.png')
+    
+    plt.savefig(save_path)
+    plt.close()
+
+    return accuracy
+
+if __name__ == "__main__": 
+    
+    best_k = None
+    max_accuracy = -1.0
+    
+    for k_val in kValue:
+        current_accuracy = evaluateDownsampling(y_true, k_val)
         
-    np.save(output_filepath, assignedLabels)
-    print(f"\n-> Đã lưu mảng nhãn kết quả vào file: {output_filepath}")
+        if current_accuracy > max_accuracy:
+            max_accuracy = current_accuracy
+            best_k = k_val
+
+    print(f"\nK tốt nhất (dựa trên tập Test): k = {best_k}")
+    print(f"\nĐộ chính xác cao nhất: {max_accuracy*100:.2f}%")
