@@ -3,6 +3,8 @@ import os
 import time
 from featureExtract.loadMnist import loadMnist 
 
+
+# Load mảng numpy train và test từ resultFeatureExtract
 dataFolder = 'data'
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
@@ -30,9 +32,12 @@ featureData = {
     'another':      {'train': trainAnother,      'test': testAnother,      'y_train': trainLabels}
 }
 
+
+# Hàm tính khoảng cách
 def euclideanDistance(x1,x2) : 
     return np.sqrt(np.sum((x1-x2) ** 2))
 
+# Bộ phân lớp kNN
 def kNNPredictLabel(featureMethod: str, testVectorIndex: int, k) -> np.ndarray:
     # Lấy các mảng đặc trưng tương ứng
     train = featureData[featureMethod]['train']
@@ -53,6 +58,8 @@ def kNNPredictLabel(featureMethod: str, testVectorIndex: int, k) -> np.ndarray:
 
     return majority_label
 
+
+# Chỉ thực hiện khi chạy trực tiếp
 if __name__ == "__main__": 
     print(f"Kích thước đặc trưng Vectorize (Train): {trainVectorize.shape}")
     print(f"Kích thước đặc trưng Vectorize (Test ): {testVectorize.shape}")
