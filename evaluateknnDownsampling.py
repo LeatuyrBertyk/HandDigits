@@ -18,6 +18,7 @@ testDownsampling = loadFeature('downsampling', 'test')
 # Giá trị k hiện tại
 kValue = 5
 
+
 # Cài đặt cấu hình cho việc trả kết quả
 featureMethod = 'downsampling'
 outputDir = os.path.join('resultkNN', f'result{featureMethod}') 
@@ -42,4 +43,4 @@ output_filename = f"{featureMethod}_k{kValue}_labels.npy"
 output_filepath = os.path.join(outputDir, output_filename)
     
 np.save(output_filepath, assignedLabels)
-print(f"\n-> Đã lưu mảng nhãn kết quả vào file: **{output_filepath}**")
+print(f"\n-> Đã lưu mảng nhãn kết quả vào file: {output_filepath}")

@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import time
+from scipy.spatial.distance import cdist
 from featureExtract.loadMnist import loadMnist 
 
 
@@ -43,12 +44,16 @@ def kNNPredictLabel(featureMethod: str, testVectorIndex: int, k) -> np.ndarray:
     train = featureData[featureMethod]['train']
     test  = featureData[featureMethod]['test']
 
-    queryVector = test[testVectorIndex].flatten()
+    # queryVector = test[testVectorIndex].flatten()
+    # 
+    # N_train = train.shape[0]
+    # distances = np.zeros(N_train) 
+    # for i in range(N_train):
+    #     distances[i] = euclideanDistance(queryVector, train[i].flatten())
     
-    N_train = train.shape[0]
-    distances = np.zeros(N_train) 
-    for i in range(N_train):
-        distances[i] = euclideanDistance(queryVector, train[i].flatten())
+    queryVector = test[testVectorIndex].reshape(1, -1) 
+    distances = cdist(queryVector, train, metric='euclidean').flatten()
+
 
     k_idx = np.argsort(distances)[:k]
     y_train = featureData[featureMethod]['y_train']
