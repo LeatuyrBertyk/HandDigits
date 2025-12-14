@@ -1,8 +1,9 @@
-from featureExtract.loadMnist import loadMnist 
+from loadMnist import loadMnist 
 import numpy as np
+import os
 
 # Load 4 mảng numpy 
-dataFolder = 'data' 
+dataFolder = '../data' 
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
@@ -27,13 +28,16 @@ def  downsamplingExtract(img, block_size = 4):
     return binary_img.flatten()
 
 # Áp dụng downsampling cho toàn bộ dataset
-processedTrainFeatures = np.array([downsamplingExtract(img) for img in trainImgs])
-processedTestFeatures = np.array([downsamplingExtract(img) for img in testImgs])
+processedTrainImgs = np.array([downsamplingExtract(img) for img in trainImgs])
+processedTestImgs = np.array([downsamplingExtract(img) for img in testImgs])
 
 # # In kết quả
 # print("Train features shape:", processedTrainFeatures.shape)
 # print("Test feature shape:", processedTestFeatures.shape)
 # 
-# # Lưu kết quả để dùng cho các bước tiếp theo
-# np.save("train_downsampling.npy", processedTrainFeatures)
-# np.save("test_downsampling.npy", processedTrainFeatures)
+OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
+train_save_path = os.path.join(OUTPUT_DIR, "trainDownsampling.npy")
+test_save_path = os.path.join(OUTPUT_DIR, "testDownsampling.npy")
+
+np.save(train_save_path, processedTrainImgs)
+np.save(test_save_path, processedTestImgs)

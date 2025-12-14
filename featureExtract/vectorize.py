@@ -1,8 +1,8 @@
-from featureExtract.loadMnist import loadMnist 
+from loadMnist import loadMnist 
 import numpy as np
 
 # Load 4 mảng numpy 
-dataFolder = 'data' 
+dataFolder = '../data' 
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
@@ -24,14 +24,18 @@ def vectorizeExtract(images):
     return binaryVectors
 
 
-# trainFeatures = vectorizeExtract(trainImgs)
-# testFeatures = vectorizeExtract(testImgs)
+processedTrainImgs = vectorizeExtract(trainImgs)
+processedTestImgs = vectorizeExtract(testImgs)
 
 # # In kết quả
 # print("Train features shape:", trainFeatures.shape)
 # print("Test features shape:", testFeatures.shape)
-# 
-# # Lưu để dùng cho KNN
-# np.save("train_vector.npy", trainFeatures)
-# np.save("test_vector.npy", testFeatures)
+
+OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
+train_save_path = os.path.join(OUTPUT_DIR, "trainVectorize.npy")
+test_save_path = os.path.join(OUTPUT_DIR, "testVectorize.npy")
+
+np.save(train_save_path, processedTrainImgs)
+np.save(test_save_path, processedTestImgs)
+
 
