@@ -12,7 +12,7 @@ testDownsampling = loadFeature('downsampling', 'test')
 
 
 # Giá trị k hiện tại
-kValue = 5
+kValue = [13,15,17,19,21]
 
 
 # Cài đặt cấu hình cho việc trả kết quả
@@ -25,18 +25,20 @@ print(f"Kích thước đặc trưng Test : {testDownsampling.shape}")
 N_test = testDownsampling.shape[0]
 
 assignedLabels = np.zeros(N_test, dtype=int)
-startTime = time.time()
 
-for i in range(N_test):
-    assignedLabels[i] = kNNPredictLabel(featureMethod, i, k=kValue)
-
-endTime = time.time()
-elapsedTime = endTime - startTime
-
-print(f"Thời gian chạy: {elapsedTime:.2f} giây")
-
-output_filename = f"{featureMethod}_k{kValue}_labels.npy"
-output_filepath = os.path.join(outputDir, output_filename)
+for index in kValue:
+    startTime = time.time()
     
-np.save(output_filepath, assignedLabels)
-print(f"\n-> Đã lưu mảng nhãn kết quả vào file: {output_filepath}")
+    for i in range(N_test):
+        assignedLabels[i] = kNNPredictLabel(featureMethod, i, k=index)
+    
+    endTime = time.time()
+    elapsedTime = endTime - startTime
+    
+    print(f"Thời gian chạy: {elapsedTime:.2f} giây")
+    
+    output_filename = f"{featureMethod}_k{index}_labels.npy"
+    output_filepath = os.path.join(outputDir, output_filename)
+        
+    np.save(output_filepath, assignedLabels)
+    print(f"\n-> Đã lưu mảng nhãn kết quả vào file: {output_filepath}")
