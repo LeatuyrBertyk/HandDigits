@@ -1,15 +1,11 @@
 import numpy as np
 import os
 import time
-from featureExtract.loadMnist import loadMnist
 from knnClassifier import kNNPredictLabel
 from knnClassifier import loadFeature
 
 
 # Load train và test bằng Downsampling
-dataFolder = 'data'
-trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
-testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 featureExtractDir = 'resultFeatureExtract' 
 trainDownsampling = loadFeature('downsampling', 'train')
 testDownsampling = loadFeature('downsampling', 'test')
