@@ -9,14 +9,14 @@ from knnClassifier import kNNPredictLabel
 from knnClassifier import loadFeature
 
 
-# Load train và test bằng Downsampling
-featureExtractDir = 'resultFeatureExtract' 
-trainDownsampling = loadFeature('downsampling', 'train')
-testDownsampling = loadFeature('downsampling', 'test')
+# Load train và test bằng Histogram
+featureExtractDir = 'resultFeatureExtract'
+trainHistogram = loadFeature('histogram', 'train')
+testHistogram = loadFeature('histogram', 'test')
 
 
 kValue = [5,7,9,11,13,15,17,19,21,23]
-featureMethod = 'downsampling'
+featureMethod = 'histogram'
 
 
 # Note vì đã cho ra kết quả ở resultkNN/resultDownsampling
@@ -24,8 +24,8 @@ featureMethod = 'downsampling'
 # # Cài đặt cấu hình cho việc trả kết quả
 # outputDir = os.path.join('resultkNN', f'result{featureMethod}') 
 # 
-# print(f"Kích thước đặc trưng Train: {trainDownsampling.shape}")
-# print(f"Kích thước đặc trưng Test : {testDownsampling.shape}")
+# print(f"Kích thước đặc trưng Train: {trainHistogram.shape}")
+# print(f"Kích thước đặc trưng Test : {testHistogram.shape}")
 # 
 # N_test = testDownsampling.shape[0]
 # assignedLabels = np.zeros(N_test, dtype=int)
@@ -47,6 +47,31 @@ featureMethod = 'downsampling'
 #     np.save(output_filepath, assignedLabels)
 #     print(f"\n-> Đã lưu mảng nhãn kết quả vào file: {output_filepath}")
 
+outputDir = os.path.join('resultkNN', f'result{featureMethod.capitalize()}') 
+os.makedirs(outputDir, exist_ok=True)
+
+print(f"Kích thước đặc trưng Train: {trainHistogram.shape}")
+print(f"Kích thước đặc trưng Test : {testHistogram.shape}")
+ 
+N_test = testHistogram.shape[0]
+assignedLabels = np.zeros(N_test, dtype=int)
+
+for index in kValue:
+    startTime = time.time()
+    for i in range(N_test):
+        assignedLabels[i] = kNNPredictLabel(featureMethod, i, k=index)
+    endTime = time.time()
+    elapsedTime = endTime - startTime
+    print(f"Thời gian chạy: {elapsedTime:.2f} giây")
+
+    output_filename = f"{featureMethod}_k{index}_labels.npy"
+    output_filepath = os.path.join(outputDir, output_filename)
+    if(os.path.exists(output_filepath)):
+       print(f"File {output_filename} đã tồn tại, bỏ qua.")
+       continue
+
+    np.save(output_filepath, assignedLabels)
+    print(f"-> Đã lưu mảng nhãn kết quả vào file: {output_filepath}")
 
 
 
@@ -58,8 +83,8 @@ _, y_true = loadMnist(dataFolder, kind='t10k')
 totalSample = len(y_true)
 
 
-def evaluateDownsampling(y_true: np.ndarray, k_val: int):
-    print(f"Đánh giá Downsampling với k = {k_val}")
+def evaluateHistogram(y_true: np.ndarray, k_val: int):
+    print(f"Đánh giá Histogram với k = {k_val}")
     
     predicted_filename = f"{featureMethod}_k{k_val}_labels.npy"
     predicted_labels_path = os.path.join(baseOutputDir, subDir, predicted_filename)
@@ -79,14 +104,14 @@ def evaluateDownsampling(y_true: np.ndarray, k_val: int):
                 annot=True, 
                 fmt='d', 
                 cmap='Blues',
-                xticklabels=[str(i) for i in range(10)], 
+                xticklabels=[str(i) for i in range(10)],
                 yticklabels=[str(i) for i in range(10)],
                 linewidths=.5, linecolor='black',
                 cbar=False)
     
     plt.xlabel('Nhãn Dự đoán (Predicted)')
     plt.ylabel('Nhãn Thực tế (True)')
-    plt.title(f'Confusion Matrix - Downsampling (K={k_val}) - Acc: {accuracy*100:.2f}%')
+    plt.title(f'Confusion Matrix - Histogram (K={k_val}) - Acc: {accuracy*100:.2f}%')
     
     save_dir = os.path.join(baseOutputDir, subDir)
     save_path = os.path.join(save_dir, f'confusion_matrix_{featureMethod}_k{k_val}.png')
@@ -102,7 +127,7 @@ if __name__ == "__main__":
     max_accuracy = -1.0
     
     for k_val in kValue:
-        current_accuracy = evaluateDownsampling(y_true, k_val)
+        current_accuracy = evaluateHistogram(y_true, k_val)
         
         if current_accuracy > max_accuracy:
             max_accuracy = current_accuracy
