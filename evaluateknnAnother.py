@@ -80,7 +80,8 @@ def evaluateAnother(y_true: np.ndarray, k_val: int):
                 annot=True, 
                 fmt='d', 
                 cmap='Blues',
-                xticklabels=range(10), yticklabels=range(10),
+                xticklabels=[str(i) for i in range(10)],
+                yticklabels=[str(i) for i in range(10)],
                 linewidths=.5, linecolor='black',
                 cbar=False)
     
