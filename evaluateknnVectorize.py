@@ -29,7 +29,7 @@ print(f"Kích thước đặc trưng Test : {testVectorize.shape}")
 N_test = testVectorize.shape[0]
 assignedLabels = np.zeros(N_test, dtype=int)
 
-index=5
+index=7
 # for index in kValue:
 startTime = time.time()
         
