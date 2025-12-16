@@ -8,11 +8,14 @@ from featureExtract.loadMnist import loadMnist
 from knnClassifier import kNNPredictLabel, loadFeature
 
 
+# Hàm tính độ chính xác và Confusion matrix
 def evaluateMethod(featureMethod, kValues, yTrue, totalSample, baseOutputDir):
+    # Cài đặt cấu hình cho thư mục kết quả
     subDir = f"result{featureMethod.capitalize()}"
     outputDir = os.path.join(baseOutputDir, subDir)
     os.makedirs(outputDir, exist_ok=True)
 
+    # Load tập train và test đã rút đặc trưng
     trainData = loadFeature(featureMethod, 'train')
     testData = loadFeature(featureMethod, 'test')
     
@@ -28,9 +31,10 @@ def evaluateMethod(featureMethod, kValues, yTrue, totalSample, baseOutputDir):
         predictedFilename = f"{featureMethod}_k{kVal}_labels.npy"
         predictedFilePath = os.path.join(outputDir, predictedFilename)
         
+        # Xử lí dựa trên mảng numpy kết quả
         if os.path.exists(predictedFilePath):
             yPred = np.load(predictedFilePath)
-        else:
+        else: # Thực hiện load sang mảng numpy nếu chưa tồn tại
             print(f" * k={kVal}: Đang dự đoán...")
             startTime = time.time()
             yPred = np.zeros(nTest, dtype=int)
@@ -40,7 +44,8 @@ def evaluateMethod(featureMethod, kValues, yTrue, totalSample, baseOutputDir):
             endTime = time.time()
             print(f" * Thời gian thực hiện: {endTime - startTime:.2f} giây")
             np.save(predictedFilePath, yPred)
-
+        
+        # Công việc 1: Tính độ chính xac
         accuracy = accuracy_score(yTrue, yPred)
         correctPredictions = np.sum(yPred == yTrue)
         print(f"   Số mẫu đúng: {correctPredictions}/{totalSample} | Độ chính xác: {accuracy*100:.2f}%")
@@ -48,7 +53,8 @@ def evaluateMethod(featureMethod, kValues, yTrue, totalSample, baseOutputDir):
         if accuracy > maxAccuracy:
             maxAccuracy = accuracy
             bestK = kVal
-
+        
+        # Công việc 2: Confusion matrix
         confMatrix = confusion_matrix(yTrue, yPred)
         plt.figure(figsize=(8, 7))
         sns.heatmap(confMatrix, 
