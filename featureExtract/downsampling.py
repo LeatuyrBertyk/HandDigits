@@ -1,9 +1,17 @@
-from loadMnist import loadMnist 
+try:
+    from featureExtract.loadMnist import loadMnist
+except ImportError:
+    from loadMnist import loadMnist
+
 import numpy as np
 import os
 
 # Load 4 mảng numpy 
-dataFolder = '../data' 
+try: 
+    dataFolder = 'data'
+except:
+    dataFolder = '../data' 
+
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
@@ -35,7 +43,11 @@ processedTestImgs = np.array([downsamplingExtract(img) for img in testImgs])
 # print("Train features shape:", processedTrainFeatures.shape)
 # print("Test feature shape:", processedTestFeatures.shape)
 # 
-OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
+try:
+    OUTPUT_DIR = os.path.join('resultFeatureExtract')
+except:
+    OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
+
 train_save_path = os.path.join(OUTPUT_DIR, "trainDownsampling.npy")
 test_save_path = os.path.join(OUTPUT_DIR, "testDownsampling.npy")
 

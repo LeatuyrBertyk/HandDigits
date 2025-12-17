@@ -1,4 +1,8 @@
-from loadMnist import loadMnist 
+try:
+    from featureExtract.loadMnist import loadMnist
+except ImportError:
+    from loadMnist import loadMnist
+
 import numpy as np
 import os
 
@@ -18,7 +22,11 @@ def anotherExtract(floatImgs):
     return myHistogramArray
 
 # Load 4 mảng numpy 
-dataFolder = '../data' 
+try:
+    dataFolder = 'data'
+except:
+    dataFolder = '../data'
+
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 processedTrainImgs = anotherExtract(trainImgs) 
@@ -26,8 +34,11 @@ processedTestImgs = anotherExtract(testImgs)
 
 # print("Kích thước đặc trưng Train:", processedTrainImgs.shape)
 # print("Kích thước đặc trưng Test :", processedTestImgs.shape)
+try:
+    OUTPUT_DIR = os.path.join('resultFeatureExtract')
+except:
+    OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
 
-OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
 train_save_path = os.path.join(OUTPUT_DIR, "trainAnother.npy")
 test_save_path = os.path.join(OUTPUT_DIR, "testAnother.npy")
 

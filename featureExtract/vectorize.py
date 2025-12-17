@@ -1,8 +1,15 @@
-from loadMnist import loadMnist 
+try:
+    from featureExtract.loadMnist import loadMnist
+except ImportError:
+    from loadMnist import loadMnist
 import numpy as np
 
 # Load 4 mảng numpy 
-dataFolder = '../data' 
+try: 
+    dataFolder = 'data'
+except:
+    dataFolder = '../data' 
+
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs, testLabels = loadMnist(dataFolder, kind='t10k')
 
@@ -30,8 +37,11 @@ processedTestImgs = vectorizeExtract(testImgs)
 # # In kết quả
 # print("Train features shape:", trainFeatures.shape)
 # print("Test features shape:", testFeatures.shape)
+try:
+    OUTPUT_DIR = os.path.join('resultFeatureExtract')
+except:
+    OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
 
-OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
 train_save_path = os.path.join(OUTPUT_DIR, "trainVectorize.npy")
 test_save_path = os.path.join(OUTPUT_DIR, "testVectorize.npy")
 

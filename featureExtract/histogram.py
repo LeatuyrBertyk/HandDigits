@@ -1,4 +1,7 @@
-from loadMnist import loadMnist
+try:
+    from featureExtract.loadMnist import loadMnist
+except ImportError:
+    from loadMnist import loadMnist
 import numpy as np
 import os
 from skimage.feature import hog
@@ -19,9 +22,13 @@ def histogramExtract(floatImgs):
     featureArray = featureArray.reshape(n, newLen, 4).mean(axis=2)
     return featureArray.astype(float)
 
-datafolder = '../data'
-trainImgs, trainLabels = loadMnist(datafolder, kind='train')
-testImgs,  testLabels  = loadMnist(datafolder, kind='t10k')
+try:
+    dataFolder = 'data'
+except:
+    dataFolder = '../data'
+
+trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
+testImgs,  testLabels  = loadMnist(dataFolder, kind='t10k')
 
 processedTrainImgs = histogramExtract(trainImgs)
 processedTestImgs  = histogramExtract(testImgs)
@@ -29,7 +36,11 @@ processedTestImgs  = histogramExtract(testImgs)
 # print("Kích thước đặc trưng Train:", processedTrainImgs.shape)
 # print("Kích thước đặc trưng Test :", processedTestImgs.shape)
 
-OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
+try:
+    OUTPUT_DIR = os.path.join('resultFeatureExtract')
+except:
+    OUTPUT_DIR = os.path.join('..', 'resultFeatureExtract') 
+
 train_save_path = os.path.join(OUTPUT_DIR, "trainHistogram.npy")
 test_save_path = os.path.join(OUTPUT_DIR, "testHistogram.npy")
 
