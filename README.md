@@ -1,6 +1,6 @@
 # Dự án nhận diện kí tự số viết tay
 
-## Dự án này thực hiện nhận diện kí tự số viết tay từ bộ dữ liệu **MNIST** bằng bốn phép trích xuất đặc trưng và thuật toán **k-Nearest Neighbors (k-NN)**. Điểm nổi bật của dự án là việc thử nghiệm và so sánh bốn phương pháp trích xuất đặc trưng khác nhau để tối ưu hóa hiệu suất phân loại.
+Dự án này thực hiện nhận diện kí tự số viết tay từ bộ dữ liệu **MNIST** bằng bốn phép trích xuất đặc trưng và thuật toán **k-Nearest Neighbors (k-NN)**. Điểm nổi bật của dự án là việc thử nghiệm và so sánh bốn phương pháp trích xuất đặc trưng khác nhau để tối ưu hóa hiệu suất phân loại.
 
 ## 📌Tính năng chính
 - Sử dụng bộ dữ liệu chuẩn **MNIST** gồm 60,000 ảnh huấn luyện và 10,000 ảnh kiểm tra.
@@ -34,4 +34,4 @@ python evaluate.py
 ```
 
 ## 📊 Kết quả thực nghiệm
-Bạn có thể xem bằng cách chạy ```evaluate.py ``` và các Confusion matrix trong thư mục ```resultkNN```.
+Bạn có thể xem bằng cách chạy ```evaluate.py``` và các Confusion matrix trong thư mục ```resultkNN```.
