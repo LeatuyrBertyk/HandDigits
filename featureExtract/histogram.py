@@ -19,7 +19,7 @@ def histogramExtract(imgs):
         hist = np.zeros(256)
 
         for pixel in img.flatten():
-            hist[pixel] += 1
+            hist[int(pixel)] += 1
 
         hist = hist / (h * w)
         features[i] = hist
@@ -34,14 +34,8 @@ except:
 trainImgs, trainLabels = loadMnist(dataFolder, kind='train')
 testImgs,  testLabels  = loadMnist(dataFolder, kind='t10k')
 
-print("Train images shape:", trainImgs.shape)
-print("Test images shape :", testImgs.shape)
-
 processedTrainImgs = histogramExtract(trainImgs)
 processedTestImgs  = histogramExtract(testImgs)
-
-print("Train feature shape:", processedTrainImgs.shape) 
-print("Test feature shape :", processedTestImgs.shape) 
 
 try:
     OUTPUT_DIR = os.path.join('resultFeatureExtract')
