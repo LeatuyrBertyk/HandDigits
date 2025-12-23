@@ -80,7 +80,7 @@ def ProcessImageToNumpy(image_path):
 
 _, HistogramLabels = loadMnist('data',kind = 'train')
 HistogramTrain = loadFeature('histogram','train')
-# print(HistogramTrain.shape) 
+# print(HistogramTrain.shape)
 path = input("Nhập đường dẫn file ảnh PNG: ") 
 vector_img = ProcessImageToNumpy(path) 
 
@@ -88,4 +88,4 @@ if vector_img is not None:
     histogram_img = histogramExtract(vector_img)
     # print(f"Kích thước vector đầu ra: {histogram_img.shape}")
     prediction =  PredictLabel(histogram_img, HistogramTrain, HistogramLabels, k = 11) 
-    print("Dự đoán chữ số trên ảnh: ", prediction) 
+    print("Dự đoán chữ số trên ảnh: ", prediction)

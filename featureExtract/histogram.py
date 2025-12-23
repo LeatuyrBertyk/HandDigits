@@ -46,4 +46,3 @@ test_save_path = os.path.join(OUTPUT_DIR, "testHistogram.npy")
 
 np.save(train_save_path, processedTrainImgs)
 np.save(test_save_path, processedTestImgs)
-
